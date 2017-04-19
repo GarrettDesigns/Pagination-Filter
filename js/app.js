@@ -1,6 +1,10 @@
 "use strict"; // no monkey business
 
 const students = document.querySelectorAll('.student-item'),
+
+    // Changing this number changes pages generated as well as
+    // configuring how many students to show and updates the pagination
+    // click event accordingly
     studentsToShow = 10;
 
 let startingStudentIndex = 0;
@@ -45,8 +49,7 @@ function generatePagination() {
     page.appendChild(pagination);
 }
 
-function filterStudents() {
-    // When a use clicks on a page number, they should see ten results
+function displayStudents() {
     for (let i = 0; i < students.length; i++) {
         students[i].style.display = 'none';
     }
@@ -58,17 +61,22 @@ function filterStudents() {
             break;
         }
     }
+}
+
+function filterStudents() {
+    // When a use clicks on a page number, they should see ten results
+    displayStudents();
 
     const pageMarker = document.getElementsByClassName('page-marker');
+
+    // Loop through students and attach event listeners 
     for (let i = 0; i < pageMarker.length; i++) {
         pageMarker[i].addEventListener('click', () => {
             startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
-            console.log(startingStudentIndex);
-            filterStudents();
+            displayStudents();
         });
     }
 }
-
 
 createSearchBox();
 generatePagination();
