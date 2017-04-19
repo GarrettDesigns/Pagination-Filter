@@ -1,12 +1,10 @@
 "use strict"; // no monkey business
 
-const students = document.querySelectorAll('.student-item');
-const startingStudentIndex = 0;
-const studentsToShow = 10;
+const students = document.querySelectorAll('.student-item'),
+    studentsToShow = 10;
 
-for (let i = 0; i < students.length; i++) {
-    students[i].style.display = 'none';
-}
+let startingStudentIndex = 0;
+
 
 function createSearchBox() {
     const searchBoxMarkup = '<input placeholder="Search for students...">' +
@@ -25,7 +23,7 @@ function generatePagination() {
     // the number of pages that need to be generated
     const page = document.getElementsByClassName('page')[0],
         numStudents = document.getElementsByClassName('student-item').length,
-        numPages = Math.ceil(numStudents / 10);
+        numPages = Math.ceil(numStudents / studentsToShow);
 
     // Create container for the pagination element
     const pagination = document.createElement('UL');
@@ -36,7 +34,7 @@ function generatePagination() {
     // Loop through the number of pages and assign a number
     // for each pages to a list item in the pagination element
     for (let i = 1; i <= numPages; i++) {
-        pageList += `<li class="page-marker">${i}</li>`;
+        pageList += `<li class="page-marker" value="${i}">${i}</li>`;
     }
 
     // Set the inner html of the pagination list 
@@ -49,8 +47,25 @@ function generatePagination() {
 
 function filterStudents() {
     // When a use clicks on a page number, they should see ten results
+    for (let i = 0; i < students.length; i++) {
+        students[i].style.display = 'none';
+    }
+
     for (let i = startingStudentIndex; i < (startingStudentIndex + studentsToShow); i++) {
-        students[i].style.display = 'block';
+        try {
+            students[i].style.display = 'block';
+        } catch (e) {
+            break;
+        }
+    }
+
+    const pageMarker = document.getElementsByClassName('page-marker');
+    for (let i = 0; i < pageMarker.length; i++) {
+        pageMarker[i].addEventListener('click', () => {
+            startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
+            console.log(startingStudentIndex);
+            filterStudents();
+        });
     }
 }
 
