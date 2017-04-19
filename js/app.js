@@ -38,7 +38,11 @@ function generatePagination() {
     // Loop through the number of pages and assign a number
     // for each pages to a list item in the pagination element
     for (let i = 1; i <= numPages; i++) {
-        pageList += `<li class="page-marker" value="${i}">${i}</li>`;
+        if (i === 1) {
+            pageList += `<li class="page-marker active" value="${i}">${i}</li>`;
+        } else {
+            pageList += `<li class="page-marker" value="${i}">${i}</li>`;
+        }
     }
 
     // Set the inner html of the pagination list 
@@ -74,6 +78,11 @@ function filterStudents() {
         pageMarker[i].addEventListener('click', () => {
             startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
             displayStudents();
+            let activeLinks = document.querySelectorAll('.page-marker.active');
+            for (let i = 0; i < activeLinks.length; i++) {
+                activeLinks[i].classList.remove('active');
+            }
+            pageMarker[i].classList.add('active');
         });
     }
 }
