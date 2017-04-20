@@ -11,13 +11,14 @@ let startingStudentIndex = 0;
 
 
 function createSearchBox() {
-    const searchBoxMarkup = '<input placeholder="Search for students...">' +
-        '<button>Search</button>';
+    const searchBoxMarkup = `<input placeholder="Search for students...">
+        <button id="search-button">Search</button><button id="reset-button">Reset</button>`;
 
     const studentSearch = document.createElement('DIV'),
         pageHeader = document.getElementsByClassName('page-header')[0];
 
     studentSearch.className = 'student-search';
+    studentSearch.id = 'student-search';
     studentSearch.innerHTML = searchBoxMarkup;
     pageHeader.appendChild(studentSearch);
 }
@@ -31,6 +32,7 @@ function generatePagination() {
 
     // Create container for the pagination element
     const pagination = document.createElement('UL');
+    pagination.id = 'pagination-list';
     pagination.className = 'pagination-list';
 
     let pageList = '';
@@ -87,6 +89,54 @@ function filterStudents() {
     }
 }
 
+function search() {
+    document.getElementById('pagination-list').style.display = 'none';
+
+    for (let i = 0; i < students.length; i++) {
+        students[i].style.display = 'none';
+    }
+
+    let searchTerm = document.getElementById('student-search').firstElementChild.value;
+    const foundStudents = [];
+
+    for (let i = 0; i < students.length; i++) {
+        const studentName = students[i].children[0].childNodes[3].textContent;
+        const studentEmail = students[i].children[0].childNodes[5].textContent;
+        if (studentName.indexOf(searchTerm) !== -1 || studentEmail.indexOf(searchTerm) !== -1) {
+            students[i].style.display = 'block';
+            foundStudents.push(students[i]);
+        }
+    }
+    if (!foundStudents.length) {
+        const searchError = document.createElement('P');
+        searchError.innerHTML = 'Sorry, no students found';
+        searchError.className = 'search-error';
+        searchError.id = 'search-error';
+
+        document.getElementsByClassName('page')[0].appendChild(searchError);
+    }
+}
+
+function reset() {
+
+    document.getElementById('student-search').firstElementChild.value = '';
+    document.getElementById('pagination-list').firstElementChild.click();
+    document.getElementById('pagination-list').style.display = 'block';
+
+    const searchError = document.getElementById('search-error');
+    if (searchError) {
+        document.getElementsByClassName('page')[0].removeChild(searchError);
+    }
+}
+
 createSearchBox();
 generatePagination();
 filterStudents();
+
+document.getElementById('search-button').addEventListener('click', () => {
+    search();
+});
+
+document.getElementById('reset-button').addEventListener('click', () => {
+    reset();
+});
