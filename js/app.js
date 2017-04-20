@@ -1,3 +1,8 @@
+// I know writing this in jQuery would have been easier and simpler
+// however, I have a good deal of jQuery experience and not so much 
+// writing vanilla JS, so as practice and as a challenge, I wrote this
+// only using vanilla JS.
+
 "use strict"; // no monkey business
 
 const students = document.querySelectorAll('.student-item'),
@@ -8,7 +13,6 @@ const students = document.querySelectorAll('.student-item'),
     studentsToShow = 10;
 
 let startingStudentIndex = 0;
-
 
 function createSearchBox() {
     const searchBoxMarkup = `<input placeholder="Search for students...">
