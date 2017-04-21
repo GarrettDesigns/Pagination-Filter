@@ -117,6 +117,8 @@ function search() {
             searchError.className = 'search-error';
             searchError.id = 'search-error';
             page.appendChild(searchError);
+        } else if (!searchResults.length && searchError !== '') {
+            searchError = searchError;
         } else {
             if (searchError) {
                 page.removeChild(searchError);
@@ -140,13 +142,13 @@ function search() {
 }
 
 function reset() {
-
     const searchError = document.getElementById('search-error'),
         studentSearch = document.getElementById('student-search'),
         paginationList = document.getElementById('pagination-list');
 
     studentSearch.firstElementChild.value = ''.trim();
 
+    // if the search error is present, remove it
     if (searchError) {
         page.removeChild(searchError);
         for (let i = 0; i < students.length; i++) {
@@ -154,10 +156,16 @@ function reset() {
         }
     }
 
+    // reset starting index to display the first ten students
     startingStudentIndex = 0;
+
+    // if the pagination is hidden make sure it's displayed again
     paginationList.style.display = 'block';
 
+    // reset the students to display all students and generate the correct number of pages
     numStudents = students.length;
+
+    // generate pages and display students
     generatePagination(students);
     displayStudents(students);
 }
