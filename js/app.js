@@ -3,8 +3,6 @@
 // writing vanilla JS, so as practice and as a challenge, I wrote this
 // only using vanilla JS.
 
-// NOTE: This is a work in progress.
-
 "use strict"; // no monkey business
 
 // Grab the students list and page element for global use
