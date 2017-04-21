@@ -52,13 +52,12 @@ function displayStudents(students) {
 }
 
 function generatePagination(students) {
-    if (students.length > 10) {
-        console.log(students.length);
-        // get the page div, total number of students and calculate
-        // the number of pages that need to be generated
-        const numPages = Math.ceil(numStudents / studentsToShow);
-        let pageList = '';
+    // get the page div, total number of students and calculate
+    // the number of pages that need to be generated
+    const numPages = Math.ceil(numStudents / studentsToShow);
+    let pageList = '';
 
+    if (students.length > 10) {
         // Loop through the number of pages and assign a number
         // for each pages to a list item in the pagination element
         for (let i = 1; i <= numPages; i++) {
@@ -68,25 +67,25 @@ function generatePagination(students) {
                 pageList += `<li class="page-marker" value="${i}">${i}</li>`;
             }
         }
+    }
 
-        // Set the inner html of the pagination list 
-        // to the list items generated above
-        pagination.innerHTML = pageList;
+    // Set the inner html of the pagination list 
+    // to the list items generated above
+    pagination.innerHTML = pageList;
 
-        const pageMarker = document.getElementsByClassName('page-marker');
+    const pageMarker = document.getElementsByClassName('page-marker');
 
-        // Loop through students and attach event listeners 
-        for (let i = 0; i < pageMarker.length; i++) {
-            pageMarker[i].addEventListener('click', () => {
-                startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
-                displayStudents(students);
-                let activeLinks = document.querySelectorAll('.page-marker.active');
-                for (let i = 0; i < activeLinks.length; i++) {
-                    activeLinks[i].classList.remove('active');
-                }
-                pageMarker[i].classList.add('active');
-            });
-        }
+    // Loop through students and attach event listeners 
+    for (let i = 0; i < pageMarker.length; i++) {
+        pageMarker[i].addEventListener('click', () => {
+            startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
+            displayStudents(students);
+            let activeLinks = document.querySelectorAll('.page-marker.active');
+            for (let i = 0; i < activeLinks.length; i++) {
+                activeLinks[i].classList.remove('active');
+            }
+            pageMarker[i].classList.add('active');
+        });
     }
 }
 
@@ -97,28 +96,35 @@ function search() {
     }
 
     let searchTerm = document.getElementById('student-search').firstElementChild.value.trim();
-
     const searchResults = [];
 
-    for (let i = 0; i < students.length; i++) {
-        const studentName = students[i].children[0].childNodes[3].textContent.trim();
-        const studentEmail = students[i].children[0].childNodes[5].textContent.trim();
-        if (studentName.indexOf(searchTerm) !== -1 || studentEmail.indexOf(searchTerm) !== -1) {
-            searchResults.push(students[i]);
-            console.log(students[i].innerText);
+    if (searchTerm !== '') {
+        for (let i = 0; i < students.length; i++) {
+            const studentName = students[i].children[0].childNodes[3].textContent.trim();
+            const studentEmail = students[i].children[0].childNodes[5].textContent.trim();
+            if (studentName.indexOf(searchTerm) !== -1 || studentEmail.indexOf(searchTerm) !== -1) {
+                searchResults.push(students[i]);
+            }
         }
-    }
-    console.log(searchResults);
-    if (!searchResults.length) {
+
+        if (!searchResults.length) {
+            const searchError = document.createElement('P');
+            searchError.innerHTML = 'Sorry, no students found';
+            searchError.className = 'search-error';
+            searchError.id = 'search-error';
+            page.appendChild(searchError);
+        } else {
+            numStudents = searchResults.length;
+            generatePagination(searchResults);
+            displayStudents(searchResults);
+        }
+
+    } else {
         const searchError = document.createElement('P');
-        searchError.innerHTML = 'Sorry, no students found';
+        searchError.innerHTML = 'Please enter a student to search for.';
         searchError.className = 'search-error';
         searchError.id = 'search-error';
         page.appendChild(searchError);
-    } else {
-        numStudents = searchResults.length;
-        generatePagination(searchResults);
-        displayStudents(searchResults);
     }
 }
 
@@ -135,6 +141,9 @@ function reset() {
             students[i].style.display = 'block';
         }
     }
+
+    startingStudentIndex = 0;
+
     numStudents = students.length;
     generatePagination(students);
     displayStudents(students);
