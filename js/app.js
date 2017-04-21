@@ -132,7 +132,11 @@ function search() {
 
             // loop through the list of students and pull out the name and email
             const studentName = students[i].children[0].childNodes[3].textContent.trim().toLowerCase();
-            const studentEmail = students[i].children[0].childNodes[5].textContent.trim().toLowerCase();
+
+            // Chop off the @example.com from the email
+            let studentEmail = students[i].children[0].childNodes[5].textContent.trim().toLowerCase();
+            studentEmail = studentEmail.split('@');
+            studentEmail = studentEmail[0];
 
             if (studentName.indexOf(searchTerm) !== -1 || studentEmail.indexOf(searchTerm) !== -1) {
                 // Push the name and email onto the searchResults array
