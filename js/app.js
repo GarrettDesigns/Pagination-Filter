@@ -98,13 +98,13 @@ function search() {
         students[i].style.display = 'none';
     }
 
-    let searchTerm = document.getElementById('student-search').firstElementChild.value.trim();
+    let searchTerm = document.getElementById('student-search').firstElementChild.value.trim().toLowerCase();
     const searchResults = [];
 
     if (searchTerm !== '') {
         for (let i = 0; i < students.length; i++) {
-            const studentName = students[i].children[0].childNodes[3].textContent.trim();
-            const studentEmail = students[i].children[0].childNodes[5].textContent.trim();
+            const studentName = students[i].children[0].childNodes[3].textContent.trim().toLowerCase();
+            const studentEmail = students[i].children[0].childNodes[5].textContent.trim().toLowerCase();
             if (studentName.indexOf(searchTerm) !== -1 || studentEmail.indexOf(searchTerm) !== -1) {
                 searchResults.push(students[i]);
             }
