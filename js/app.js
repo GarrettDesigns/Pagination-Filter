@@ -142,7 +142,8 @@ function search() {
 function reset() {
 
     const searchError = document.getElementById('search-error'),
-        studentSearch = document.getElementById('student-search');
+        studentSearch = document.getElementById('student-search'),
+        paginationList = document.getElementById('pagination-list');
 
     studentSearch.firstElementChild.value = ''.trim();
 
@@ -154,6 +155,7 @@ function reset() {
     }
 
     startingStudentIndex = 0;
+    paginationList.style.display = 'block';
 
     numStudents = students.length;
     generatePagination(students);
