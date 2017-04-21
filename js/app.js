@@ -3,6 +3,8 @@
 // writing vanilla JS, so as practice and as a challenge, I wrote this
 // only using vanilla JS.
 
+// NOTE: This is a work in progress.
+
 "use strict"; // no monkey business
 
 const students = document.querySelectorAll('.student-item'),
@@ -50,38 +52,41 @@ function displayStudents(students) {
 }
 
 function generatePagination(students) {
-    // get the page div, total number of students and calculate
-    // the number of pages that need to be generated
-    const numPages = Math.ceil(numStudents / studentsToShow);
-    let pageList = '';
+    if (students.length > 10) {
+        console.log(students.length);
+        // get the page div, total number of students and calculate
+        // the number of pages that need to be generated
+        const numPages = Math.ceil(numStudents / studentsToShow);
+        let pageList = '';
 
-    // Loop through the number of pages and assign a number
-    // for each pages to a list item in the pagination element
-    for (let i = 1; i <= numPages; i++) {
-        if (i === 1) {
-            pageList += `<li class="page-marker active" value="${i}">${i}</li>`;
-        } else {
-            pageList += `<li class="page-marker" value="${i}">${i}</li>`;
-        }
-    }
-
-    // Set the inner html of the pagination list 
-    // to the list items generated above
-    pagination.innerHTML = pageList;
-
-    const pageMarker = document.getElementsByClassName('page-marker');
-
-    // Loop through students and attach event listeners 
-    for (let i = 0; i < pageMarker.length; i++) {
-        pageMarker[i].addEventListener('click', () => {
-            startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
-            displayStudents(students);
-            let activeLinks = document.querySelectorAll('.page-marker.active');
-            for (let i = 0; i < activeLinks.length; i++) {
-                activeLinks[i].classList.remove('active');
+        // Loop through the number of pages and assign a number
+        // for each pages to a list item in the pagination element
+        for (let i = 1; i <= numPages; i++) {
+            if (i === 1) {
+                pageList += `<li class="page-marker active" value="${i}">${i}</li>`;
+            } else {
+                pageList += `<li class="page-marker" value="${i}">${i}</li>`;
             }
-            pageMarker[i].classList.add('active');
-        });
+        }
+
+        // Set the inner html of the pagination list 
+        // to the list items generated above
+        pagination.innerHTML = pageList;
+
+        const pageMarker = document.getElementsByClassName('page-marker');
+
+        // Loop through students and attach event listeners 
+        for (let i = 0; i < pageMarker.length; i++) {
+            pageMarker[i].addEventListener('click', () => {
+                startingStudentIndex = (pageMarker[i].value * studentsToShow) - studentsToShow;
+                displayStudents(students);
+                let activeLinks = document.querySelectorAll('.page-marker.active');
+                for (let i = 0; i < activeLinks.length; i++) {
+                    activeLinks[i].classList.remove('active');
+                }
+                pageMarker[i].classList.add('active');
+            });
+        }
     }
 }
 
