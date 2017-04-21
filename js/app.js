@@ -91,6 +91,9 @@ function generatePagination(students) {
 
 function search() {
 
+    const paginationList = document.getElementById('pagination-list');
+    let searchError = document.getElementById('search-error') ? document.getElementById('search-error') : '';
+
     for (let i = 0; i < students.length; i++) {
         students[i].style.display = 'none';
     }
@@ -107,24 +110,32 @@ function search() {
             }
         }
 
-        if (!searchResults.length) {
-            const searchError = document.createElement('P');
+        if (!searchResults.length && searchError === '') {
+            paginationList.style.display = 'none';
+            searchError = document.createElement('P');
             searchError.innerHTML = 'Sorry, no students found';
             searchError.className = 'search-error';
             searchError.id = 'search-error';
             page.appendChild(searchError);
         } else {
+            if (searchError) {
+                page.removeChild(searchError);
+            }
+            paginationList.style.display = 'block';
             numStudents = searchResults.length;
             generatePagination(searchResults);
             displayStudents(searchResults);
         }
 
     } else {
-        const searchError = document.createElement('P');
-        searchError.innerHTML = 'Please enter a student to search for.';
-        searchError.className = 'search-error';
-        searchError.id = 'search-error';
-        page.appendChild(searchError);
+        if (searchError === '') {
+            paginationList.style.display = 'none';
+            searchError = document.createElement('P');
+            searchError.innerHTML = 'Please enter a student to search for.';
+            searchError.className = 'search-error';
+            searchError.id = 'search-error';
+            page.appendChild(searchError);
+        }
     }
 }
 

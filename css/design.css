@@ -100,6 +100,17 @@ body {
     text-align: center;
 }
 
+.search-error {
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    background: rgba(178, 34, 34, 0.3);
+    color: firebrick;
+    border: 1px solid #f00;
+    width: 300px;
+    margin: 30px auto 0;
+}
+
 .pagination-list li {
     display: inline;
 }
