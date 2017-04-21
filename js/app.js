@@ -42,7 +42,7 @@ function displayStudents(students) {
         students[i].style.display = 'none';
     }
 
-    for (let i = startingStudentIndex; i < (startingStudentIndex + studentsToShow); i++) {
+    for (let i = startingStudentIndex; i <= (startingStudentIndex + studentsToShow); i++) {
         try {
             students[i].style.display = 'block';
         } catch (e) {
@@ -91,15 +91,17 @@ function generatePagination(students) {
 
 function search() {
 
-    const paginationList = document.getElementById('pagination-list');
-    let searchError = document.getElementById('search-error') ? document.getElementById('search-error') : '';
+    const paginationList = document.getElementById('pagination-list'),
+        searchResults = [];
+
+    let searchError = document.getElementById('search-error') ? document.getElementById('search-error') : '',
+        searchTerm = document.getElementById('student-search').firstElementChild.value.trim().toLowerCase();
 
     for (let i = 0; i < students.length; i++) {
         students[i].style.display = 'none';
     }
 
-    let searchTerm = document.getElementById('student-search').firstElementChild.value.trim().toLowerCase();
-    const searchResults = [];
+    startingStudentIndex = 0;
 
     if (searchTerm !== '') {
         for (let i = 0; i < students.length; i++) {
