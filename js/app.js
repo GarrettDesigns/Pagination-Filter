@@ -51,7 +51,7 @@ function displayStudents(students) {
 
     // Starting with whatever student is equal to the current starting index show all students
     // up to the amount of students to show set at the top of this file
-    for (let i = startingStudentIndex; i <= (startingStudentIndex + studentsToShow); i++) {
+    for (let i = startingStudentIndex; i < (startingStudentIndex + studentsToShow); i++) {
         try {
             students[i].style.display = 'block';
         } catch (e) {
